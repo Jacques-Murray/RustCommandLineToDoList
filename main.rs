@@ -56,6 +56,7 @@ impl Todo {
             .open("db.txt")?;
 
         file.write_all(content.as_bytes())?;
+        Ok(())
     }
 
     // Mark an item as complete
@@ -93,7 +94,7 @@ fn main() {
   }
 
   let action = &args[1];
-  let item = if args.len()>2 { Some{&args[2]} } else { None };
+  let item = if args.len()>2 { Some(&args[2]) } else { None };
 
   let mut todo = Todo::new().expect("Initialization of db failed");
 
