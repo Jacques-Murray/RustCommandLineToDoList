@@ -56,6 +56,7 @@ impl Todo {
             .open("db.txt")?;
 
         file.write_all(content.as_bytes())?;
+        Ok(())
     }
 
     // Mark an item as complete
@@ -84,49 +85,49 @@ impl Todo {
 }
 
 fn main() {
-  let args: Vec<String> = std::env::args().collect();
+    let args: Vec<String> = std::env::args().collect();
 
-  if args.len() < 2 {
-    println!("Usage: todo <action> [item]");
-    println!("Actions: add, complete, list");
-    return;
-  }
+    if args.len() < 2 {
+        println!("Usage: todo <action> [item]");
+        println!("Actions: add, complete, list");
+        return;
+    }
 
-  let action = &args[1];
-  let item = if args.len()>2 { Some{&args[2]} } else { None };
+    let action = &args[1];
+    let item = if args.len() > 2 { Some(&args[2]) } else { None };
 
-  let mut todo = Todo::new().expect("Initialization of db failed");
+    let mut todo = Todo::new().expect("Initialization of db failed");
 
-  match action.as_str() {
-    "add" => {
-      if let Some(i)=item{
-        todo.insert(i);
-        match todo.save() {
-          Ok(_) => println!("'{}' added.",i),
-          Err(e) => println!("An error occurred: {}", e),
+    match action.as_str() {
+        "add" => {
+            if let Some(i) = item {
+                todo.insert(i);
+                match todo.save() {
+                    Ok(_) => println!("'{}' added.", i),
+                    Err(e) => println!("An error occurred: {}", e),
+                }
+            } else {
+                println!("'add' action requires an item.");
+            }
         }
-      }else {
-        println!("'add' action requires an item.");
-      }
-    }
-    "complete" => {
-      if let Some(i)=item{
-        match todo.complete(i){
-          None=>println!("'{}' is not present in the list",i),
-          Some(_)=> match todo.save() {
-            Ok(_)=>println!("'{}' completed",i),
-            Err(e)=>println!("An error occurred: {}",e),
-          },
+        "complete" => {
+            if let Some(i) = item {
+                match todo.complete(i) {
+                    None => println!("'{}' is not present in the list", i),
+                    Some(_) => match todo.save() {
+                        Ok(_) => println!("'{}' completed", i),
+                        Err(e) => println!("An error occurred: {}", e),
+                    },
+                }
+            } else {
+                println!("'complete' action requires an item.");
+            }
         }
-      } else {
-        println!("'complete' action requires an item.");
-      }
+        "list" => {
+            todo.list();
+        }
+        _ => {
+            println!("Unknown action. Use 'add', 'complete', or 'list'.");
+        }
     }
-    "list"=>{
-      todo.list();
-    }
-    _ => {
-      println!("Unknown action. Use 'add', 'complete', or 'list'.");
-    }
-  }
 }
