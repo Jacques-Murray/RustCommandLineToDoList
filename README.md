@@ -12,19 +12,19 @@ This is a simple command-line to-do list application written in Rust. It allows 
 ## How to Run
 1. **Compile the program:**
    ```bash
-   rustc src/main.rs -o todo
+   cargo build
    ```
 2. **Add a new task:**
     ```bash
-    ./todo add "Buy milk"
+    cargo run add "Buy milk"
     ```
 3. **Add another task:**
     ```bash
-    ./todo add "Read a book"
+    cargo run add "Read a book"
     ```
 4. **List all tasks:**
     ```bash
-    ./todo list
+    cargo run list
     ```
     *Output:*
     ```bash
@@ -35,16 +35,16 @@ This is a simple command-line to-do list application written in Rust. It allows 
     ```
 5. **Complete a task:**
     ```bash
-    ./todo complete "Buy milk"
+    cargo run complete "Buy milk"
     ```
 6. **List tasks again:**
     ```bash
-    ./todo list
+    cargo run list
     ```
     *Output:*
     ```bash
     --- To-Do List ---
-    [x] Buy milk
+    [X] Buy milk
     [ ] Read a book
     ------------------
     ```
